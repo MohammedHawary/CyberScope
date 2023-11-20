@@ -1,0 +1,13 @@
+<RCC>
+  <qresource prefix="icon">
+    <file>account.png</file>
+    <file>CS.jpg</file>
+    <file>logo.jpg</file>
+    <file>logo.png</file>
+    <file>OWASP_TOP_10.png</file>
+    <file>password.png</file>
+    <file>recource.py</file>
+    <file>recource.qrc</file>
+    <file>username.png</file>
+  </qresource>
+</RCC>
