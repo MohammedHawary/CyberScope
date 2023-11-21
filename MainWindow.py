@@ -1,11 +1,11 @@
 from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QComboBox, QToolButton, QTextEdit, QTabWidget, QDialog, QHBoxLayout, QMainWindow, QWidget, QLineEdit, QAction, QPushButton, QLabel, QVBoxLayout, QStackedWidget, QDesktopWidget, QGridLayout, QMenu
+from PyQt5.QtWidgets import QApplication, QScrollArea, QComboBox, QToolButton, QTextEdit, QTabWidget, QDialog, QHBoxLayout, QMainWindow, QWidget, QLineEdit, QAction, QPushButton, QLabel, QVBoxLayout, QStackedWidget, QDesktopWidget, QGridLayout, QMenu
 from PyQt5.QtCore import QFile, QTextStream, Qt
 from PyQt5.QtGui import QIcon
 import DB
 
 class MainWindow(QMainWindow):
-    newFolderNameInput = ''
+    x = 1
     def __init__(self):
         super(MainWindow, self).__init__()
         uic.loadUi('MainWindow.ui', self)
@@ -20,6 +20,27 @@ class MainWindow(QMainWindow):
         self.underTopBar          = self.findChild(QWidget,        "underTopBar"       )
         self.sidBar               = self.findChild(QWidget,        "sidBar"            )
         self.topBar               = self.findChild(QWidget,        "topBar"            )
+
+        self.titleOfScansWidget   = self.findChild(QWidget,        "titleOfScansWidget")
+        self.scan_1_widget        = self.findChild(QWidget,        "scan_1_widget"     )
+        self.scan_2_widget        = self.findChild(QWidget,        "scan_2_widget"     )
+        self.scan_3_widget        = self.findChild(QWidget,        "scan_3_widget"     )
+        self.scan_4_widget        = self.findChild(QWidget,        "scan_4_widget"     )
+        self.scan_5_widget        = self.findChild(QWidget,        "scan_5_widget"     )
+        self.scan_6_widget        = self.findChild(QWidget,        "scan_6_widget"     )
+        self.scan_7_widget        = self.findChild(QWidget,        "scan_7_widget"     )
+        self.scan_8_widget        = self.findChild(QWidget,        "scan_8_widget"     )
+        self.scan_9_widget        = self.findChild(QWidget,        "scan_9_widget"     )
+        self.scan_10_widget       = self.findChild(QWidget,        "scan_10_widget"    )
+        self.scan_11_widget       = self.findChild(QWidget,        "scan_11_widget"    )
+        self.scan_12_widget       = self.findChild(QWidget,        "scan_12_widget"    )
+        self.scan_13_widget       = self.findChild(QWidget,        "scan_13_widget"    )
+        self.scan_14_widget       = self.findChild(QWidget,        "scan_14_widget"    )
+        self.scan_15_widget       = self.findChild(QWidget,        "scan_15_widget"    )
+        self.scan_16_widget       = self.findChild(QWidget,        "scan_16_widget"    )
+        self.scan_17_widget       = self.findChild(QWidget,        "scan_17_widget"    )
+        self.scan_18_widget       = self.findChild(QWidget,        "scan_18_widget"    )
+        self.scan_19_widget       = self.findChild(QWidget,        "scan_19_widget"    )
                             # QStackedWidget
         self.pagesStackedWidget   = self.findChild(QStackedWidget, "pagesStackedWidget")
                             # QLabel
@@ -41,22 +62,24 @@ class MainWindow(QMainWindow):
         self.trash_btn            = self.findChild(QPushButton,     "trash_btn"        )
         self.cancel_btn           = self.findChild(QPushButton,     "cancel_btn"       )
         self.back_btn             = self.findChild(QPushButton,     "back_btn"         )
-                            # QTabWidget
+        self.show_btn             = self.findChild(QPushButton,     "show_btn"         )
+                            # QLineEdit
         self.targetInput          = self.findChild(QLineEdit,       "targetInput"      )
         self.nameInput            = self.findChild(QLineEdit,       "nameInput"        )
+        self.searchInput          = self.findChild(QLineEdit,       "searchInput"      )
                             # QGridLayout
         self.gridLayout_8         = self.findChild(QGridLayout,     "gridLayout_8"     )
                             # QTabWidget
         self.tabWidgetForInputs   = self.findChild(QTabWidget,     "tabWidgetForInputs")
-                            # QTabWidget
+                            # QTextEdit
         self.descriptionInput     = self.findChild(QTextEdit,       "descriptionInput" )
                             # QComboBox
         self.folderInput          = self.findChild(QComboBox,       "folderInput"      )
                             # QToolButton
         self.save_btn             = self.findChild(QToolButton,     "save_btn"         )
-
-
-        # self.descriptionInput.setStyleSheet("background-color: red;")
+                            # QScrollArea
+        self.scrollArea           = self.findChild(QScrollArea,       "scrollArea"     )
+        # self.scrollArea.setStyleSheet("background-color: white;")
                             # QLabel section
         self.logedUser_btn.setIcon(QIcon("png/profile-user.png"))
         self.logedUser_btn.setIconSize(self.logedUser_btn.size())
@@ -73,6 +96,11 @@ class MainWindow(QMainWindow):
         self.OWASP_btn_3.clicked.connect(lambda: self.pagesStackedWidget.setCurrentIndex(2))
         # self.trash_btn.clicked.connect(lambda: self.selected_btn(self.trash_btn,2))
         self.newFolder_btn.clicked.connect(self.AddNewFolderWindow)
+
+        self.cancel_btn.clicked.connect(self.cancel_scan)
+        self.save_btn.clicked.connect(self.save_scan)
+
+
         self.CreateAllFolders()
         all_buttons = self.sidBar.findChildren(QPushButton)
         all_buttons[1].setStyleSheet('''
@@ -87,12 +115,13 @@ class MainWindow(QMainWindow):
                             # called func section
         DB.create_table()
         self.addTabSpace()
+        self.search()
         self.show()
         self.showMaximized()
 
                             # pages section
 
-        self.pagesStackedWidget.setCurrentIndex(0)
+        self.pagesStackedWidget.setCurrentIndex(7)
         self.pagesStackedWidget.currentChanged.connect(self.on_page_changed)
 
                             # different sections
@@ -105,6 +134,32 @@ class MainWindow(QMainWindow):
         self.save_btn.setPopupMode(QToolButton.MenuButtonPopup)
         self.launch_btn.triggered.connect(lambda: print("launch_btn pressed"))
 
+
+
+        self.show_btn.clicked.connect(self.showing)
+
+
+    def search(self):
+        self.searchInput.setPlaceholderText("Search Scans")
+
+
+    def showing(self):
+        self.x += 1
+        widgets = {2:self.scan_1_widget, 3:self.scan_2_widget, 4:self.scan_3_widget, 5:self.scan_4_widget,6:self.scan_5_widget,7:self.scan_6_widget,8:self.scan_7_widget,9:self.scan_8_widget,10:self.scan_9_widget,11:self.scan_10_widget}
+        widgets[self.x].hide()
+
+
+    def cancel_scan(self):
+        self.nameInput.setText("")
+        self.descriptionInput.setText("")
+        self.targetInput.setText("")
+        self.pagesStackedWidget.setCurrentIndex(1)
+
+    def save_scan(self):
+        print(f'name   => {self.nameInput.text()}')
+        print(f'desc   => {self.descriptionInput.toPlainText()}')
+        print(f'folder => {self.folderInput.currentText()}')
+        print(f'target => {self.targetInput.text()}')
 
     def on_page_changed(self, index):
         if index == 0:
@@ -239,6 +294,10 @@ class MainWindow(QMainWindow):
         data = DB.select_all_data()
         for row in data:
             self.create_new_button(row[1])
+            if not row[1] == "All Scans":
+                self.folderInput.addItem(row[1])
+
+
     def LinkedAllFolders(self,button):
         sender_button = self.sender()
         print(f"{sender_button.objectName()} pressed!")

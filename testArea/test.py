@@ -1,91 +1,33 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QToolButton, QMenu, QAction
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTextEdit, QScrollArea
 
-class MainWindow(QMainWindow):
+class MyWidget(QWidget):
     def __init__(self):
-        super(MainWindow, self).__init__()
+        super().__init__()
 
-        self.initUI()
+        self.init_ui()
 
-    def initUI(self):
-        tool_button = QToolButton(self)
-        tool_button.setText('Options')
+    def init_ui(self):
+        self.setWindowTitle('QScrollArea Background Color Example')
 
-        menu = QMenu(self)
+        # Create a QTextEdit widget to be placed inside the QScrollArea
+        text_edit = QTextEdit(self)
+        text_edit.setPlainText("This is a QTextEdit inside a QScrollArea. Scroll down to see more text." * 10)
 
-        # Add items to the menu
-        action1 = QAction('Item 1', self)
-        action2 = QAction('Item 2', self)
-        action3 = QAction('Item 3', self)
+        # Create a QScrollArea and set the background color using a stylesheet
+        scroll_area = QScrollArea(self)
+        scroll_area.setWidgetResizable(True)  # Ensures that the widget inside the QScrollArea can resize
+        scroll_area.setWidget(text_edit)
 
-        menu.addAction(action1)
-        menu.addAction(action2)
-        menu.addAction(action3)
+        # Set the background color of the QScrollArea using a stylesheet
+        scroll_area.setStyleSheet("background-color: red;")
 
-        # Connect the triggered signal to a function
-        action1.triggered.connect(lambda: self.on_action_triggered(action1))
-        action2.triggered.connect(lambda: self.on_action_triggered(action2))
-        action3.triggered.connect(lambda: self.on_action_triggered(action3))
-
-        # Set the menu for the tool button
-        tool_button.setMenu(menu)
-
-        # Make the tool button a menu button
-        tool_button.setPopupMode(QToolButton.MenuButtonPopup)
-
-        # Set the background color for the arrow
-        arrow_background_color = '#e74c3c'  # Change this to the desired color
-        tool_button.setStyleSheet(f'''
-            QToolButton::menu-indicator {{
-                background-color: {arrow_background_color};
-                width: 40px;
-                height: 100%;
-            }}
-            QToolButton {{
-                background-color: #3498db;
-                color: #ffffff;
-                border: 1px solid #2980b9;
-                border-radius: 4px;
-                padding: 5px;
-            }}
-            QToolButton::menu-arrow {{
-                border: none;
-                image: none;
-            }}
-        ''')
-
-        # Set a custom arrow icon with a width of 40px and background color
-        icon = QIcon('path/to/your/arrow-image.png')  # Replace with your arrow image
-        pixmap = icon.pixmap(40, 40)
-        pixmap.fill(Qt.transparent)  # Set the background color to transparent
-        tool_button.setIcon(QIcon(pixmap))
-
-        # Apply styles using QSS
-        self.setStyleSheet('''
-            QMenu {
-                background-color: #2c3e50;
-                border: 1px solid #34495e;
-                padding: 5px;
-            }
-
-            QMenu::item {
-                color: #ecf0f1;
-            }
-
-            QMenu::item:selected {
-                background-color: #2980b9;
-            }
-        ''')
-
-        self.setGeometry(300, 300, 300, 200)
-        self.setWindowTitle('QToolButton Example')
-        self.show()
-
-    def on_action_triggered(self, action):
-        print(f'Pressed: {action.text()}')
+        # Create a QVBoxLayout to arrange the QScrollArea
+        layout = QVBoxLayout(self)
+        layout.addWidget(scroll_area)
 
 if __name__ == '__main__':
-    app = QApplication([])
-    window = MainWindow()
-    app.exec_()
+    app = QApplication(sys.argv)
+    window = MyWidget()
+    window.show()
+    sys.exit(app.exec_())

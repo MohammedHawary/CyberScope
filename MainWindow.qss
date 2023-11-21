@@ -3,7 +3,51 @@ MainWindow{
 }
 
 
+/* 		scrollArea		 */
+
+/*#scrollArea{
+	background-color: red;
+	border: none;
+}
+*/
+/*#checkBox{
+	width: 30px;
+}
+#pushButton_2{
+	width: 70px;
+	font-size: 15p;
+	border: none;
+	height: 40px;
+}
+#pushButton_2:hover{
+	width: 70px;
+	background-color: red;
+	height: 40px;
+}
+*/
+
+
+#titleOfScansWidget{
+	border: 3px solid rgb(130, 135, 144);
+}
+#scan_1_widget,#scan_1_widget,#scan_2_widget,#scan_3_widget,#scan_4_widget,#scan_5_widget,#scan_6_widget,#scan_7_widget,#scan_8_widget,#scan_9_widget,#scan_10_widget,#scan_11_widget,#scan_12_widget,#scan_13_widget,#scan_14_widget,#scan_15_widget,#scan_16_widget,#scan_17_widget,#scan_18_widget,#scan_19_widget{
+	border-bottom: 3px solid rgb(130, 135, 144);
+	border-left: 3px solid rgb(130, 135, 144);
+	border-right: 3px solid rgb(130, 135, 144);
+}
+/* 		QLineEdit		 */
+#searchInput{
+	border: 1px solid rgb(178, 178, 178);
+	height: 25px;
+}
+
+
 /* 		buttons		 */
+
+#none_btn_1,#none_btn_2{
+/*	background-color: rgb(240, 240, 240);*/
+/*	border: 1px solid rgb(240, 240, 240);*/
+}
 #save_btn{
 	color: white;
 }
@@ -17,6 +61,7 @@ QMenu {
     border: 1px solid #34495e;
     padding: 5px;
     width: 108px;
+    font-size: 15px;
 }
 
 QMenu::item {
@@ -193,6 +238,9 @@ QTabBar::tab {
 }
 
 /* 		Labels		 */
+#searchFindLabel{
+	color: rgb(130, 135, 144);
+}
 #newFolderLbel{
 	text-align: left;
 }
