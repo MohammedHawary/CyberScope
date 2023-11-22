@@ -18,6 +18,95 @@ def create_table():
     conn.commit()
     conn.close()
 
+def create_scan_info_table():
+    conn = create_connection() 
+    cursor = conn.cursor()
+
+    create_table_query = '''
+    CREATE TABLE IF NOT EXISTS ScanInfo (
+        id INTEGER PRIMARY KEY,
+        Name TEXT,
+        Description TEXT,
+        FolderName TEXT,
+        Target TEXT
+    );
+    '''
+    cursor.execute(create_table_query)
+
+    conn.commit()
+    conn.close()
+
+def insert_scan_info_data(name, description, folder_name, target):
+    conn = create_connection()
+    cursor = conn.cursor()
+
+    insert_data_query = f'''
+    INSERT INTO ScanInfo (Name, Description, FolderName, Target)
+    VALUES ('{name}', '{description}', '{folder_name}', '{target}');
+    '''
+    cursor.execute(insert_data_query)
+
+    conn.commit()
+    conn.close()
+
+def value_exists_in_column(value, table_name="ScanInfo", column_name="Name"):
+    conn = create_connection()  
+    cursor = conn.cursor()
+
+    query = f"SELECT {column_name} FROM {table_name} WHERE {column_name} = ?;"
+    cursor.execute(query, (value,))
+    result = cursor.fetchone()
+
+    conn.close()
+
+    return result is not None
+
+def show_scan_info_data():
+    conn = create_connection()  # Assume you have a function named create_connection
+    cursor = conn.cursor()
+
+    # Retrieve all data from the ScanInfo table
+    cursor.execute("SELECT * FROM ScanInfo;")
+    data = cursor.fetchall()
+
+    conn.close()
+
+    # Display the retrieved data
+    if data:
+        print("ScanInfo Data:")
+        for row in data:
+            print(row)
+    else:
+        print("No data in the ScanInfo table.")
+
+
+def show_tables_and_columns():
+    conn = create_connection()  # Assume you have a function named create_connection
+    cursor = conn.cursor()
+
+    # Get a list of all tables in the database
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = cursor.fetchall()
+
+    # Display columns for each table
+    for table in tables:
+        table_name = table[0]
+        print(f"Table: {table_name}")
+        
+        # Get column information for the current table
+        cursor.execute(f"PRAGMA table_info({table_name});")
+        columns = cursor.fetchall()
+
+        # Display column names and types
+        for column in columns:
+            column_name = column[1]
+            column_type = column[2]
+            print(f"  Column: {column_name}, Type: {column_type}")
+
+    conn.close()
+
+
+
 def insert_data_1():
     conn = create_connection()
     cursor = conn.cursor()
@@ -158,15 +247,16 @@ if __name__ == "__main__":
     # create_table()
     # insert_data_1()
     # insert_data_2()
-    data = select_all_data()
-
-    for row in data:
-        print(f'ID: {row[0]}, Folder Name: {row[1]}')
-
+    # data = select_all_data()
+    # for row in data:
+        # print(f'ID: {row[0]}, Folder Name: {row[1]}')
+    # show_tables_and_columns()
     # remove_all_data()
     # print(get_last_element_id())
     # print(get_first_id_and_name()[0]," ",get_first_id_and_name()[1])
     # delete_folder_by_name_and_id('Scan 1')
-
-
     # insert_folder_data_if_not_exists(10,"scan 10")
+
+
+    # print(value_exists_in_column("Tiba"))
+    # show_scan_info_data()
